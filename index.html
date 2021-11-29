@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <div class="sidebarContainer">
+        <div class="sidebar">
+          <div class="restaurantType" v-for="restaurant in allRestaurants">
+            <h5>{{ processName(restaurant.category) }}</h5>
+            <span class="restaurantCount">
+              {{ restaurant.restaurantList.length }} restaurants
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="restaurantsContainer">
+        <div
+          v-for="( restaurant, i) in allRestaurants"
+          :id="restaurant.category"
+          :key="i"
+          class="brandContainer"
+        >
+          <h4>{{ processName(restaurant.category) }}</h4>
+          <div class="container">
+            <div class="item" v-for="(item,i) in restaurant.restaurantList" :id="(i>=6)?('hide'+restaurant.category):''">
+              <img
+                src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=500&q=60"
+                alt="khana"
+                class="item-img"
+              />
+              <div class="name">{{ item.name + i }}</div>
+              <div class="tags">
+                <span class="tag" v-for="tag in item.food_types">
+                  {{ tag }}
+                </span>
+              </div>
+              <div class="details">
+                <span class="rating"> {{ (item.ratings)?item.ratings:'--' }}</span>
+                <span class="duration"> {{ item.delivery_time }} </span>
+                <span class="price"> {{ item.price_for_two }} </span>
+              </div>
+              <div class="quickView">
+                QUICK VIEW
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="src/index.js"></script>
+  </body>
+</html>
