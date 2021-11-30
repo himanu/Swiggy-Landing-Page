@@ -26,7 +26,7 @@
         >
           <h4>{{ processName(restaurant.category) }}</h4>
           <div class="container">
-            <div class="item" v-for="(item,i) in restaurant.restaurantList" :id="(i>=6)?('hide'+restaurant.category):''">
+            <div class="item" v-for="(item,i) in restaurant.restaurantList" :class="(i>=6)?('hideItem hide_'+ mergeCategroy(restaurant.category)):''" >
               <img
                 src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=500&q=60"
                 alt="khana"
@@ -45,6 +45,9 @@
               </div>
               <div class="quickView">
                 QUICK VIEW
+              </div>
+              <div v-if="i == 5" class="openItem" :id="('show_'+ mergeCategroy(restaurant.category))" @click="showCategoryItems(restaurant.category)">
+                  + {{ restaurant.restaurantList.length - i - 1 }} more
               </div>
             </div>
           </div>
