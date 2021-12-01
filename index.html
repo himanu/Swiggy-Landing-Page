@@ -9,45 +9,83 @@
     <div id="app" class="app">
       <div class="sidebarContainer">
         <div class="sidebar">
-          <div class="restaurantType" v-for="restaurant in allRestaurants">
-            <h5>{{ processName(restaurant.category) }}</h5>
+          <a class="restaurantType"  v-for="(restaurant, i) in allRestaurants" :class=" (i === 0)?( 'active '+ mergeCategory(restaurant.category) ):mergeCategory(restaurant.category) " :href="'#' + mergeCategory(restaurant.category)">
+            <div class="heading">{{ processName(restaurant.category) }}</div>
             <span class="restaurantCount">
               {{ restaurant.restaurantList.length }} restaurants
             </span>
-          </div>
+          </a>
+          <a class="restaurantType allinswiggy" href="#allinswiggy">
+            <div class="heading"> All in swiggy </div>
+            <span class="restaurantCount">
+              {{ swiggyRestaurants.length }} restaurants
+            </span>
+          </a>
         </div>
       </div>
       <div class="restaurantsContainer">
         <div
           v-for="( restaurant, i) in allRestaurants"
-          :id="restaurant.category"
+          :id="mergeCategory(restaurant.category)"
           :key="i"
           class="brandContainer"
         >
-          <h4>{{ processName(restaurant.category) }}</h4>
+          <div class="category">{{ processName(restaurant.category) }}</div>
           <div class="container">
-            <div class="item" v-for="(item,i) in restaurant.restaurantList" :class="(i>=6)?('hideItem hide_'+ mergeCategroy(restaurant.category)):''" >
+            <div class="item" v-for="(item,i) in restaurant.restaurantList" :class="(i>=6)?('hideItem hide_'+ mergeCategory(restaurant.category)):((i !== 5?'hoverEffect': ''))" >
               <img
-                src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=500&q=60"
+                :src="(i >= this.imagesUrl.length)?this.imagesUrl[0]:this.imagesUrl[i]"
                 alt="khana"
                 class="item-img"
               />
-              <div class="name">{{ item.name + i }}</div>
+              <div class="name">{{ item.name }}</div>
               <div class="tags">
                 <span class="tag" v-for="tag in item.food_types">
                   {{ tag }}
                 </span>
               </div>
               <div class="details">
-                <span class="rating"> {{ (item.ratings)?item.ratings:'--' }}</span>
+                <span class="rating" :class="(item.ratings?'green':'')"> ★  {{ (item.ratings)? item.ratings:'--' }}</span>
+                <span class="duration"> {{ item.delivery_time }} </span>
+                <span class="price"> ₹ {{ item.price_for_two }} for two </span>
+              </div>
+              <div class="quickView">
+                QUICK VIEW
+              </div>
+              <div v-if="i == 5" class="openItem" :id="('show_'+ mergeCategory(restaurant.category))" @click="showCategoryItems(restaurant.category)">
+                  + {{ restaurant.restaurantList.length - i - 1 }} more
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="allinswiggy"
+          class="brandContainer"
+        >
+          <div class="category"> all in swiggy </div>
+          <div class="container">
+            <div class="item" v-for="(item,i) in swiggyRestaurants" :class="(i>=6)?('hideItem hide_allinswiggy'):((i !== 5?'hoverEffect': ''))" >
+              <img
+                src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=500&q=60"
+                alt="khana"
+                class="item-img"
+              />
+              <div class="name">{{ item.name }}</div>
+              <div class="tags">
+                <span class="tag" v-for="tag in item.food_types">
+                  {{ tag }}
+                </span>
+              </div>
+              <div class="details">
+                <span class="rating" :class="(item.ratings?'green':'')"> ★  {{ (item.ratings)? item.ratings:'--' }}</span>
                 <span class="duration"> {{ item.delivery_time }} </span>
                 <span class="price"> {{ item.price_for_two }} </span>
               </div>
               <div class="quickView">
                 QUICK VIEW
               </div>
-              <div v-if="i == 5" class="openItem" :id="('show_'+ mergeCategroy(restaurant.category))" @click="showCategoryItems(restaurant.category)">
-                  + {{ restaurant.restaurantList.length - i - 1 }} more
+              <div v-if="i == 5" class="openItem" :id="('show_allinswiggy')" @click="showCategoryItems('allinswiggy')">
+                  + {{ swiggyRestaurants.length - i - 1 }} more
               </div>
             </div>
           </div>
