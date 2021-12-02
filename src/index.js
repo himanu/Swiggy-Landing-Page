@@ -5,6 +5,7 @@ const app = Vue.createApp({
             message: "Hello",
             allRestaurants: [],
             swiggyRestaurants: [],
+            seeAllRestaurants: [],
             seeAll: false,
             loading: true,
             error: null,
@@ -17,6 +18,13 @@ const app = Vue.createApp({
             .then(data => {
                 this.allRestaurants = data;
                 this.getAllSwiggyRestaurant(data);
+                let restaurantList = [];
+                data.forEach((restaurants)=>{
+                    restaurants.restaurantList.forEach((restaurant)=>{
+                        restaurantList.push(restaurant);
+                    })
+                })
+                this.seeAllRestaurants = restaurantList;
             })
             .catch(err => console.log("Error ", err));
     },
@@ -82,7 +90,6 @@ function setActiveClass(current) {
         }
     }
 }
-
 // allRestaurants = appInstance.allRestaurants;
 // console.log('allRestaurants ',allRestaurants);
 // appInstance.$watch('allRestaurants', function (newValue, oldValue) {
